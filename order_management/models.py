@@ -2,12 +2,14 @@ from django.db import models
 from django.utils.translation import gettext as _
 from django.core.validators import RegexValidator
 
+import uuid
 
 class BillingAddress(models.Model):
     '''
     Model for orders
     '''
 
+    uuid = models.UUIDField(default=uuid.uuid4, unique=True)
     first_name = models.CharField(max_length=225)
     last_name = models.CharField(max_length=225)
 
@@ -43,6 +45,7 @@ class Order(models.Model):
         DELIVERED: "Delivered",
     }
 
+    uuid = models.UUIDField(default=uuid.uuid4, unique=True)
     total_amount = models.DecimalField(max_digits=10, decimal_places=2)
     stripe_payment_intent_id = models.CharField(max_length=100)
 
@@ -57,6 +60,7 @@ class Order(models.Model):
     
 
 class Shipment(models.Model):
+    uuid = models.UUIDField(default=uuid.uuid4, unique=True)
     order = models.OneToOneField('Order', on_delete=models.CASCADE, related_name='shipment')
     tracking_number = models.CharField(max_length=100, blank=True, null=True)
     shipment_id = models.CharField(max_length=100, blank=True, null=True)

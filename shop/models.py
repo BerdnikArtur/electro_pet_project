@@ -6,10 +6,13 @@ from django.contrib.postgres.fields import ArrayField
 
 from shippo import components
 
+import uuid
+
 class Category(models.Model):
     '''
     Simple model for categories, there is no anything complex
     '''
+    uuid = models.UUIDField(default=uuid.uuid4, unique=True)
     name = models.CharField(max_length=225)
     slug = models.SlugField(unique=True, editable=False)
 
@@ -48,6 +51,7 @@ class Product(models.Model):
         BLUE: "blue",
     }
 
+    uuid = models.UUIDField(default=uuid.uuid4, unique=True)
     name = models.CharField(max_length=225)
     slug = models.SlugField(unique=True, editable=False)
 
@@ -95,6 +99,7 @@ class Product(models.Model):
         ordering = ['-time_created', 'name']
 
 class ProductSizes(models.Model):
+    uuid = models.UUIDField(default=uuid.uuid4, unique=True)
     size = models.CharField(max_length=225)  
 
     length = models.DecimalField(max_digits=10, decimal_places=2)
@@ -118,5 +123,6 @@ class ProductSizes(models.Model):
         return self.size
 
 class MultipleProductImages(models.Model):
+    uuid = models.UUIDField(default=uuid.uuid4, unique=True)
     image = models.ImageField(upload_to="shop/gallery_images/%y%m%d", null=True, blank=True)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)

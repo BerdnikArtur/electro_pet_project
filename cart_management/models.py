@@ -4,7 +4,10 @@ from django.http import Http404
 
 from .managers import ItemCollectionManager
 
+import uuid
+
 class ItemCollection(models.Model):
+    uuid = models.UUIDField(default=uuid.uuid4, unique=True)
     total_price = models.DecimalField(max_digits=8, decimal_places=2, default=0)
     quantity = models.PositiveBigIntegerField(default=0)
     customer = models.OneToOneField("user_management.CustomUser", on_delete=models.CASCADE)
@@ -28,6 +31,7 @@ class WishList(ItemCollection):
 
 
 class AbstractOrderProduct(models.Model):
+    uuid = models.UUIDField(default=uuid.uuid4, unique=True)
     color = models.CharField(max_length=225, null=True, blank=True)
     qty = models.PositiveBigIntegerField(default=1, blank=True)
 

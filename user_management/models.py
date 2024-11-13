@@ -3,6 +3,7 @@ from django.contrib.auth.models import AbstractUser
 from django.utils.translation import gettext as _
 
 from .managers import CustomUserManager
+import uuid
 
 class CustomUser(AbstractUser):
     '''
@@ -11,6 +12,7 @@ class CustomUser(AbstractUser):
     '''
 
     #tipical fields, other fields already in AbstractUser
+    uuid = models.UUIDField(default=uuid.uuid4, unique=True)
     email = models.EmailField(_('email address'), unique=True, blank=False, null=False)
 
     USERNAME_FIELD = 'email'
