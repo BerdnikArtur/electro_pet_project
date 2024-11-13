@@ -4,19 +4,18 @@ from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 from .forms import CheckoutForm
-from .services.services import CheckoutService
+from core.application.services.internal.order_management import CheckoutService
 
-from utils.mixins.service_mixins import BaseServiceMixin
+from shared.mixins.base_service_mixin import BaseViewMixin
 
 from typing import Any
 
-class CheckoutPage(BaseServiceMixin, LoginRequiredMixin, FormView):
+class CheckoutPage(BaseViewMixin, LoginRequiredMixin, FormView):
     form_class = CheckoutForm
     service_class = CheckoutService
     template_name = 'order_management/checkout.html'
     success_url = reverse_lazy('home')
     login_url = reverse_lazy('login')
-    raise_exception = True
 
     def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
         context = super().get_context_data(**kwargs)
@@ -31,6 +30,6 @@ class CheckoutPage(BaseServiceMixin, LoginRequiredMixin, FormView):
 
     def form_invalid(self, form):
         if self.request.method == 'POST' and self.request.headers.get('X-Requested-With') == 'XMLHttpRequest':
-            return JsonResponse({'status': 'error', 'message': form.errors})
+            return JsonResponse({'status': 'error', 'message': form.errors}, status=400)
 
         return super().form_invalid(form)

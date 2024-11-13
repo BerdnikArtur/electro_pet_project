@@ -77,7 +77,6 @@ class ItemCollectionViewTest(BaseItemCollectionViewTest):
         cls.assertContains(response, 'qty-2')
         cls.assertContains(response, 'subtotal')
 
-
     def test_delete_button_wishlist(cls):
         response = cls.client.put(reverse('delete_button_wishlist'))
         cls.assertEqual(response.status_code, 302)

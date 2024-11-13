@@ -1,5 +1,5 @@
 from django.forms import BaseModelForm
-from django.shortcuts import redirect, HttpResponseRedirect
+from django.shortcuts import redirect
 from django.http import HttpResponse, JsonResponse
 from django.views.generic import CreateView
 from django.contrib.auth import login, logout
@@ -10,7 +10,7 @@ from typing import Any
 
 from .forms import RegisterUserForm, LoginUserForm
 
-from .services import *
+from core.application.services.internal.user_management import *
 
 class RegisterUser(CreateView):
     form_class = RegisterUserForm

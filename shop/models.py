@@ -120,4 +120,3 @@ class ProductSizes(models.Model):
 class MultipleProductImages(models.Model):
     image = models.ImageField(upload_to="shop/gallery_images/%y%m%d", null=True, blank=True)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
-

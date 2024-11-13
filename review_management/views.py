@@ -1,6 +1,6 @@
 from django.shortcuts import redirect
 
-from .services import *
+from core.application.services.internal.review_management import *
 
 def create_review(request, category, product):
     is_ajax = request.headers.get('X-Requested-With') == 'XMLHttpRequest'

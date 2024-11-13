@@ -7,14 +7,16 @@ from django.utils.translation import gettext as _
 from django.http import HttpResponseRedirect
 
 from .forms import *
-from .services import *
+from core.application.services.internal.shop_management import *
 
-from utils.mixins.service_mixins import BaseServiceMixin
+from shared.mixins.base_service_mixin import BaseViewMixin
+from core.infrastructure.repositories.shop_management.shop_management import *
 
 
-class HomePage(ListView, BaseServiceMixin):
+class HomePage(ListView, BaseViewMixin):
     model = Product
     service_class = HomePageService
+    repository_classes = {}
     template_name = 'shop/index.html'
     context_object_name = 'products'
 
@@ -24,9 +26,12 @@ class HomePage(ListView, BaseServiceMixin):
         return self.service.get_context_data(request=self.request, context=context)
     
 
-class StorePage(ListView, FormMixin, BaseServiceMixin):
+class StorePage(ListView, FormMixin, BaseViewMixin):
     model = Product
     service_class = StorePageService
+    repository_classes = {
+        'category_repository': CategoryRepository,
+    } 
     template_name = 'shop/store.html'
     slug_url_kwargs = 'category'
     paginate_by = 9
@@ -43,12 +48,12 @@ class StorePage(ListView, FormMixin, BaseServiceMixin):
     def post(self, request, *args, **kwargs):
         self.object_list = self.get_queryset()
         context = self.get_context_data()
-        
-        request.session['category'] = [i.slug for i in Category.objects.filter(pk__in=request.POST.getlist('category', []))]
+
+        self.service.post(request)
         
         return self.render_to_response(context)
 
-class ProductPage(DetailView, BaseServiceMixin):
+class ProductPage(DetailView, BaseViewMixin):
     model = Product
     service_class = ProductPageService
     template_name = 'shop/product.html'

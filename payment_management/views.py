@@ -3,7 +3,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.conf import settings
 
 from .models import *
-from.services import stripe_service
+from core.application.services.external.payment_management import create_payment_intent
 
 
 @csrf_exempt
@@ -16,7 +16,7 @@ def payment_intent(request):
     if request.method == 'POST' and request.headers.get("X-Requested-With") == "XMLHttpRequest":
         amount = request.user.cart.total_price
         try:
-            intent = stripe_service.create_payment_intent(amount)
+            intent = create_payment_intent(amount)
             return JsonResponse({'client_secret': intent.client_secret})
         except Exception as e:
             return JsonResponse({'status': 'error', 'message': str(e)})

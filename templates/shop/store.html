@@ -32,7 +32,7 @@
 					<div class="checkbox-filter">
 						{% for i in category_aside %}
 						<div class="input-checkbox">
-							<input type="checkbox" id="category-{{ forloop.counter }}" value="{{ i.pk }}" name="category" {% if i.pk|stringformat:"s" in checkbox_categories %} checked {% endif %}>
+							<input type="checkbox" id="category-{{ forloop.counter }}" value="{{ i.id }}" name="category" {% if i.id|stringformat:"s" in checkbox_categories %} checked {% endif %}>
 							<label for="category-{{ forloop.counter }}">
 								<span></span>
 								{{ i.name }}

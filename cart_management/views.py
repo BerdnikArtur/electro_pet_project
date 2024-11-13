@@ -1,7 +1,7 @@
 from django.shortcuts import redirect
 from django.http import JsonResponse
 
-from .services import ItemCollectionService
+from core.application.services.internal.cart_management import ItemCollectionService
 
 def delete_button_cart(request):
     is_ajax = request.headers.get('X-Requested-With') == 'XMLHttpRequest'

@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.http import JsonResponse
 
-from .services.services import newsletter_service
+from core.application.services.internal.notification_management import newsletter_service
 
 import json
 
